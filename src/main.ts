@@ -1,10 +1,10 @@
 import "./scss/styles.scss";
 
-import { BuyerModel } from "./components/base/Models/BuyerModel";
-import { CatalogModel } from "./components/base/Models/CatalogModel";
-import { CartModel } from "./components/base/Models/CartModel";
+import { BuyerModel } from "./components/Models/BuyerModel";
+import { CatalogModel } from "./components/Models/CatalogModel";
+import { CartModel } from "./components/Models/CartModel";
 import { apiProducts } from "./utils/data";
-import { ApiService } from "./components/base/Models/ApiService";
+import { ApiService } from "./components/Models/ApiService";
 import { Api } from "./components/base/Api";
 import { API_URL } from "./utils/constants";
 

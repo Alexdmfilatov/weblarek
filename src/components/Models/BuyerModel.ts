@@ -1,4 +1,4 @@
-import  { IBuyer } from "../../../types";
+import  { IBuyer } from "../../types";
 
 export class BuyerModel {
   

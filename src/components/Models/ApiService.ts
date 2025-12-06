@@ -4,7 +4,7 @@ import {
   IOrderRequest, 
   IOrderResponse,
   IApi 
-} from '../../../types';
+} from '../../types';
 
 // Слой коммуникации — класс отвечает за работу с сервером
 export class ApiService {
