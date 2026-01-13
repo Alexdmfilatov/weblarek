@@ -1,35 +1,34 @@
 import { IProduct } from "../../types";
-export class CatalogModel {
-  
-  private products: IProduct[]= [];
-// Хранит все товары, полученные с сервера.
-  private selectedProduct: IProduct | null = null;
-// Хранит товар, выбранный пользователем для подробного просмотра.
+import { EventEmitter } from "../base/Events";
 
-// Методы класса:
+export class CatalogModel {
+  private products: IProduct[] = [];
+  private selectedProduct: IProduct | null = null;
+  private events?: EventEmitter;
+
+  constructor(events?: EventEmitter) {
+    this.events = events;
+  }
+
   setProducts(products: IProduct[]): void {
     this.products = products;
+    this.events?.emit("catalog:changed", { products: this.products });
   }
-// Сохраняет массив товаров.
 
   getProducts(): IProduct[] {
     return this.products;
   }
-// Возвращает массив товаров каталога.
 
   getProductById(id: string): IProduct | undefined {
-    return this.products.find(product => product.id === id);
+    return this.products.find((product) => product.id === id);
   }
-// Ищет товар по id.
 
   setSelectedProduct(product: IProduct): void {
     this.selectedProduct = product;
+    this.events?.emit("catalog:select", { product });
   }
-// Сохраняет выбранный товар.
 
   getSelectedProduct(): IProduct | null {
     return this.selectedProduct;
   }
-// Возвращает товар для подробного отображения.
-
 }

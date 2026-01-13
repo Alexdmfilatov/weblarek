@@ -1,51 +1,55 @@
-import  { IBuyer } from "../../types";
+import { IBuyer } from "../../types";
+import { EventEmitter } from "../base/Events";
 
 export class BuyerModel {
-  
   private data: IBuyer = {
-  payment: null,
-  email: '',
-  phone: '',
-  address: ''
-}
+    payment: null,
+    email: "",
+    phone: "",
+    address: "",
+  };
 
-// Методы класса:
+  private events?: EventEmitter;
+
+  constructor(events?: EventEmitter) {
+    this.events = events;
+  }
 
   setField<K extends keyof IBuyer>(field: K, value: IBuyer[K]): void {
     this.data[field] = value;
+    this.events?.emit("buyer:change", { field, value, data: this.data });
   }
-// Сохраняет одно поле без удаления других.
 
   getData(): IBuyer {
     return this.data;
   }
-// Возвращает все данные покупателя.
 
   clear(): void {
     this.data = {
       payment: null,
-      email: '',
-      phone: '',
-      address: ''
-    }
+      email: "",
+      phone: "",
+      address: "",
+    };
+    this.events?.emit("buyer:clear");
   }
-// Очищает все поля.
 
   validate(): Record<string, string> {
     const errors: Record<string, string> = {};
+
     if (!this.data.payment) {
-      errors.payment = 'Не выбран вид оплаты';
+      errors.payment = "Не выбран вид оплаты";
     }
     if (!this.data.email) {
-      errors.email = 'Укажите email';
+      errors.email = "Укажите email";
     }
     if (!this.data.phone) {
-      errors.phone = 'Укажите телефон';
-    } 
-    if (!this.data.address) {
-      errors.address = 'Укажите адрес доставки';
+      errors.phone = "Укажите телефон";
     }
+    if (!this.data.address) {
+      errors.address = "Укажите адрес доставки";
+    }
+
     return errors;
   }
-// Возвращает объект ошибок.
 }
