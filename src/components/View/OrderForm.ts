@@ -24,12 +24,10 @@ export class OrderForm extends Form<IOrderFormData> {
     this.addressInput = ensureElement<HTMLInputElement>('input[name="address"]', this.form);
 
     this.cardButton.addEventListener('click', () => {
-      this.payment = 'card';
       this.onChange('payment', 'card');
     });
 
     this.cashButton.addEventListener('click', () => {
-      this.payment = 'cash';
       this.onChange('payment', 'cash');
     });
   }

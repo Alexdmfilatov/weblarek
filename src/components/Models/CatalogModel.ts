@@ -3,7 +3,7 @@ import { EventEmitter } from "../base/Events";
 
 export class CatalogModel {
   private products: IProduct[] = [];
-  private selectedProduct: IProduct | null = null;
+  private selectedProductId: string | null = null;
   private events?: EventEmitter;
 
   constructor(events?: EventEmitter) {
@@ -12,7 +12,7 @@ export class CatalogModel {
 
   setProducts(products: IProduct[]): void {
     this.products = products;
-    this.events?.emit("catalog:changed", { products: this.products });
+    this.events?.emit("catalog:changed"); // без данных
   }
 
   getProducts(): IProduct[] {
@@ -20,15 +20,21 @@ export class CatalogModel {
   }
 
   getProductById(id: string): IProduct | undefined {
-    return this.products.find((product) => product.id === id);
+    return this.products.find((p) => p.id === id);
   }
 
-  setSelectedProduct(product: IProduct): void {
-    this.selectedProduct = product;
-    this.events?.emit("catalog:select", { product });
+  setSelectedProductById(id: string): void {
+    this.selectedProductId = id;
+    this.events?.emit("catalog:select"); // без данных
   }
 
   getSelectedProduct(): IProduct | null {
-    return this.selectedProduct;
+    if (!this.selectedProductId) return null;
+    return this.getProductById(this.selectedProductId) ?? null;
+  }
+
+  clearSelected(): void {
+    this.selectedProductId = null;
+    this.events?.emit("catalog:select");
   }
 }

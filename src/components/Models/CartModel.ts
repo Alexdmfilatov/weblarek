@@ -15,27 +15,21 @@ export class CartModel {
 
   addItem(product: IProduct): void {
     this.items.push(product);
-    this.events?.emit("cart:changed", { items: this.items });
+    this.events?.emit("cart:changed");
   }
 
   removeItem(product: IProduct): void {
     this.items = this.items.filter((item) => item.id !== product.id);
-    this.events?.emit("cart:changed", { items: this.items });
+    this.events?.emit("cart:changed");
   }
 
   clear(): void {
     this.items = [];
-    this.events?.emit("cart:changed", { items: this.items });
+    this.events?.emit("cart:changed");
   }
 
   getTotal(): number {
-    let total = 0;
-    for (const item of this.items) {
-      if (item.price !== null) {
-        total += item.price;
-      }
-    }
-    return total;
+    return this.items.reduce((total, item) => total + (item.price ?? 0), 0);
   }
 
   getCount(): number {
@@ -43,9 +37,6 @@ export class CartModel {
   }
 
   hasItem(id: string): boolean {
-    if (this.items.find((item) => item.id === id)) {
-      return true;
-    }
-    return false;
+    return this.items.some((item) => item.id === id);
   }
 }

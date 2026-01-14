@@ -27,11 +27,6 @@ export class ContactsForm extends Form<IContactsFormData> {
     this.phoneInput.addEventListener('input', () => {
       this.onChange('phone', this.phoneInput.value);
     });
-
-    this.form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      this.onSubmit();
-    });
   }
 
   set email(value: string) {

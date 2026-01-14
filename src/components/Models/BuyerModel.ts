@@ -1,6 +1,8 @@
 import { IBuyer } from "../../types";
 import { EventEmitter } from "../base/Events";
 
+type BuyerChangeField = keyof IBuyer | "clear";
+
 export class BuyerModel {
   private data: IBuyer = {
     payment: null,
@@ -17,7 +19,7 @@ export class BuyerModel {
 
   setField<K extends keyof IBuyer>(field: K, value: IBuyer[K]): void {
     this.data[field] = value;
-    this.events?.emit("buyer:change", { field, value, data: this.data });
+    this.events?.emit("buyer:change", { field: field as BuyerChangeField });
   }
 
   getData(): IBuyer {
@@ -31,7 +33,7 @@ export class BuyerModel {
       phone: "",
       address: "",
     };
-    this.events?.emit("buyer:clear");
+    this.events?.emit("buyer:change", { field: "clear" });
   }
 
   validate(): Record<string, string> {

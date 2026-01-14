@@ -6,7 +6,8 @@ export interface ICardPreviewData extends ICardData {
   category: keyof typeof categoryMap;
   image: string;
   description: string;
-  inCart: boolean;
+  buttonText: string;
+  buttonDisabled: boolean;
 }
 
 export class CardPreview extends Card<ICardPreviewData> {
@@ -23,9 +24,7 @@ export class CardPreview extends Card<ICardPreviewData> {
     this.descriptionElement = ensureElement<HTMLElement>('.card__text', this.container);
     this.buttonElement = ensureElement<HTMLButtonElement>('.card__button', this.container);
 
-    this.buttonElement.addEventListener('click', () => {
-      this.onAddOrRemove();
-    });
+    this.buttonElement.addEventListener('click', () => this.onAction());
   }
 
   set category(value: keyof typeof categoryMap) {
@@ -36,9 +35,7 @@ export class CardPreview extends Card<ICardPreviewData> {
   set image(value: string) {
     const file = value.startsWith('/') ? value.slice(1) : value;
 
-    const src = value.startsWith('http')
-      ? value
-      : `${CDN_URL}/${file}`;
+    const src = value.startsWith('http') ? value : `${CDN_URL}/${file}`;
 
     this.imageElement.src = src;
     this.imageElement.alt = this.titleElement.textContent ?? '';
@@ -48,18 +45,11 @@ export class CardPreview extends Card<ICardPreviewData> {
     this.descriptionElement.textContent = value;
   }
 
-  set inCart(value: boolean) {
-    if (this.priceElement.textContent === 'Недоступно') {
-      this.buttonElement.disabled = true;
-      this.buttonElement.textContent = 'Недоступно';
-      return;
-    }
-
-    this.buttonElement.disabled = false;
-    this.buttonElement.textContent = value ? 'Удалить из корзины' : 'Купить';
+  set buttonText(value: string) {
+    this.buttonElement.textContent = value;
   }
 
-  protected onAddOrRemove(): void {
-    this.onAction();
+  set buttonDisabled(value: boolean) {
+    this.buttonElement.disabled = value;
   }
 }
